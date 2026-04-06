@@ -77,13 +77,23 @@ Search 1_zettel/ with Grep for key terms from the new note's title, tags, and co
 - Prefer cross-domain connections over obvious same-topic links
 - If 1_zettel/ is empty (first batch of a fresh vault), link between notes in the current batch
 
-### 6. Write
+### 6. Dedup Check
+
+Before writing, verify no duplicate note already exists in `1_zettel/`:
+
+1. Grep `1_zettel/` for `^title:` lines containing the new note's title (or key words from it)
+2. If an existing note has the **exact same title**, skip creating this note. Report it as "SKIPPED (duplicate): <title> already exists at <path>"
+3. If an existing note has a **very similar title** (one is a substring of the other, or they differ only in punctuation/whitespace), report it as "WARNING (possible duplicate): new '<title>' vs existing '<existing-title>' at <path>" — still create the note, but flag it for user review
+
+This prevents re-ingesting the same content when inbox files are processed multiple times or when similar source materials overlap.
+
+### 7. Write
 
 Write the note to 1_zettel/YYYY-MM/<slug>.md (create directory if needed).
 
 Slug format: kebab-case derived from title, max 60 characters. Transliterate non-ASCII if needed (e.g. "SSH 密钥认证原理" → `ssh-key-authentication`).
 
-### 7. Handle Images
+### 8. Handle Images
 
 Search the note content for ALL image references using these patterns:
 1. `![[filename.png]]` — Obsidian wikilink (including `![[Pasted image YYYYMMDDHHMMSS.png]]`)
@@ -113,5 +123,7 @@ This worker handles **only** the file processing pipeline above.
 When finished, report as a numbered list:
 1. Files processed (count)
 2. Notes created (count, may exceed files if atomization split content)
-3. Links created (count)
-4. New note paths (one per line)
+3. Notes skipped as duplicates (count, with titles and existing paths)
+4. Possible duplicates flagged for review (count, with title pairs)
+5. Links created (count)
+6. New note paths (one per line)
