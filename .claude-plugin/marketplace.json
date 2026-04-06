@@ -1,0 +1,11 @@
+{
+  "name": "zettelkasten",
+  "description": "AI-powered Obsidian vault organizer using Zettelkasten methodology",
+  "plugins": [
+    {
+      "name": "zettelkasten",
+      "description": "Atomize inbox into Zettelkasten notes, build links, maintain MOC navigation",
+      "source": "."
+    }
+  ]
+}
