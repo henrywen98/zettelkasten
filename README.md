@@ -1,88 +1,47 @@
-# AutoPARA
+# Zettelkasten
 
-AI-powered Obsidian vault organizer — drop materials into inbox, let AI archive, compile wiki, and generate visualizations.
+AI-powered Obsidian vault organizer — drop materials into inbox, AI atomizes into permanent notes, builds links, and maintains MOC navigation.
 
-> A Claude Code plugin.
-
-## Inspiration
-
-- **[Andrej Karpathy](https://x.com/karpathy)**'s Obsidian workflow — the idea of using AI to actively organize and compile a knowledge base
-- **[Tiago Forte](https://fortelabs.com/)**'s PARA method — the Projects / Areas / Resources / Archives organizational framework
-
-AutoPARA combines both: PARA's structural principles to organize the vault, and AI to automate archiving, extraction, and compilation — solving the "good at capturing, bad at organizing" problem.
-
-## Installation
-
-1. Open the plugin marketplace in Claude Code
-2. Search `henrywen98/auto-para`
-3. Install the `autopara` plugin
-
-## Commands
-
-| Command | Description |
-|---------|-------------|
-| `/para ingest <file>` | Process inbox files — archive to `3_archive/` and compile into `1_wiki/` |
-| `/para query <question>` | Ask questions against your knowledge base, get structured answers |
-| `/para lint` | Health check: broken links, orphan pages, tag inconsistencies, missing frontmatter |
-| `/para viz <topic>` | Generate visualizations: Marp slides / Mermaid diagrams / Matplotlib charts |
-| `/para status` | View knowledge base stats: file counts, tag distribution, inbox backlog |
-| `/para migrate` | One-time full migration of an existing vault into AutoPARA structure |
+> A Claude Code plugin using the Zettelkasten methodology.
 
 ## How It Works
 
-```
-Drop files into 0_inbox/
-        |
-   /para ingest
-        |
-        v
-+-----------------------------------+
-| 1. Analyze content                 |
-| 2. Generate frontmatter            |
-| 3. Archive to 3_archive/YYYY-MM/  |
-| 4. Move images to 4_assets/       |
-| 5. Compile into 1_wiki/           |
-+-----------------------------------+
-        |
-        v
-  1_wiki/ ready to browse
-```
-
-- **0_inbox/** — Single entry point, drop your materials here
-- **3_archive/** — Original files archived by year-month, with AI-generated frontmatter
-- **1_wiki/** — AI-compiled knowledge layer (concept articles, topic pages, tag index)
-- **2_output/** — Query results
-- **4_assets/** — Centralized image/attachment storage
+1. Drop files into `0_inbox/` — notes, web clips, imports, anything
+2. Run `/zet ingest` — AI reads, atomizes, rewrites, links, and organizes
+3. Browse `1_zettel/` for your permanent notes, `2_maps/` for topic navigation
+4. Run `/zet query <question>` to search and synthesize from your knowledge base
+5. Run `/zet lint` to check vault health
 
 ## Vault Structure
 
 ```
 Vault/
-├── 0_inbox/        — Single entry point
-├── 1_wiki/         — AI-compiled knowledge layer
-│   ├── _index.md   — Master index
-│   ├── _tags.md    — Tag index
-│   ├── concepts/   — Concept articles
-│   ├── topics/     — Topic aggregation pages
-│   └── viz/        — Visualizations
-├── 2_output/       — Query results
-├── 3_archive/      — Archived originals (3_archive/YYYY-MM/)
-└── 4_assets/       — Images & attachments
+├── 0_inbox/     — Drop materials here
+├── 1_zettel/    — Permanent notes (atomic, linked, by year-month)
+├── 2_maps/      — MOC navigation (AI maintained)
+├── 3_output/    — Query results, lint reports
+└── 4_assets/    — Images and attachments
 ```
 
-## Quick Start
+## Commands
 
-1. Install: search `henrywen98/auto-para` in Claude Code plugin marketplace
-2. Initialize your vault: `/para migrate` (one-time migration to AutoPARA structure)
-3. Daily use: drop materials into `0_inbox/`, run `/para ingest`
+| Command | Description |
+|---------|-------------|
+| `/zet ingest [target]` | Process inbox files into Zettelkasten notes |
+| `/zet query <question>` | Ask questions against your knowledge base |
+| `/zet lint` | Health check: orphans, broken links, frontmatter |
 
-## Tech Stack
+## Installation
 
-- **Claude Code Plugin** — SKILL.md-driven AI workflows
-- **Python (uv)** — Deterministic file operations (scan, validate, link rewriting)
-- **python-frontmatter** — YAML frontmatter parsing
-- **Marp / Mermaid / Matplotlib** — Multi-format visualization output
-- **Git + Git LFS** — Version control with LFS for binary files
+```bash
+/plugins install github:henrywen98/zettelkasten
+```
+
+## Requirements
+
+- Claude Code
+- An Obsidian vault (or any markdown folder)
+- Git initialized in the vault (for backup safety)
 
 ## License
 

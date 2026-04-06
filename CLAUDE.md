@@ -4,51 +4,35 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-AutoPARA is a Claude Code plugin that uses AI to automatically organize Obsidian vaults using the PARA methodology. Users drop files into inbox; AI archives them with frontmatter, compiles a wiki knowledge layer, and generates visualizations.
-
-## Development Commands
-
-```bash
-# Install Python dependencies (requires uv, Python >=3.12)
-cd plugins/autopara/scripts && uv sync
-
-# Scripts — always run from plugins/autopara/scripts/
-uv run scan.py <vault_path> [output_path]        # Vault inventory → manifest.json
-uv run relink.py <md_file> <old_prefix> <new_prefix>  # Rewrite image links after file moves
-uv run validate.py <vault_path> <manifest_path>   # Post-migration validation
-```
-
-No test suite or lint configuration exists.
+Zettelkasten is a Claude Code plugin that automatically organizes Obsidian vaults using the Zettelkasten methodology. Users drop files into 0_inbox/; AI atomizes content into permanent notes, builds wikilinks, and maintains MOC (Maps of Content) navigation.
 
 ## Architecture
 
-### Two-Layer Design
+### Pure Skill + Agent Plugin
 
-**AI layer** (skills in `plugins/autopara/skills/<name>/SKILL.md`) handles content analysis, frontmatter generation, and wiki compilation. **Deterministic layer** (Python scripts in `plugins/autopara/scripts/`) handles file scanning, link rewriting, and validation. Design principle: AI decides *what* to do with content; scripts handle *precise file operations*.
+No Python, no external dependencies. Three skills handle user commands; one agent handles batch processing:
 
-Skills reference specs and scripts via `${CLAUDE_PLUGIN_ROOT}` — this variable resolves to `plugins/autopara/` at runtime. All script paths in SKILL.md files use this prefix (e.g., `${CLAUDE_PLUGIN_ROOT}/scripts/relink.py`).
+- `zet-ingest` (skill) — Orchestrator: scans inbox, processes files directly or dispatches zet-worker agents for large batches
+- `zet-query` (skill) — Knowledge base Q&A: navigates MOCs and notes to answer questions
+- `zet-lint` (skill) — Health check: orphan notes, broken links, frontmatter completeness, MOC coverage
+- `zet-worker` (agent) — Batch executor: processes ~10 inbox files per instance, dispatched by zet-ingest
 
-### Key Cross-Cutting Patterns
+Skills reference specs via `${CLAUDE_PLUGIN_ROOT}` — resolves to the plugin root at runtime.
 
-- **Frontmatter contracts**: Archive files require 7 fields, wiki files require 5, query outputs require 4. Specs in `references/frontmatter-spec.md` — skills and validate.py both enforce these.
-- **Vault ownership**: `0_inbox/` belongs to the user, `1_wiki/` belongs to AI, `3_archive/` is the bridge. AI never modifies inbox; users never edit wiki directly.
-- **Image handling**: All images centralized in `4_assets/`. After moving a file, always run `relink.py` to update paths. Supports both `![](path)` and `![[path]]` Obsidian syntax.
-- **Batch mode**: `para-ingest` has a `--batch` flag that skips user confirmation, wiki updates, and git commits — designed for teammate/parallel processing during `para-migrate`.
+### Vault = Current Working Directory
 
-### para-migrate Parallel Execution
+Claude Code is launched inside the Obsidian vault. All paths are relative — no vault_path parameter needed.
 
-Migration is the most complex workflow, split into 4 phases:
-1. **Scan** (scan.py) → manifest.json
-2. **Plan** (AI reads previews in batches, generates migration-plan.json) → pauses for user review
-3. **Execute** (~40 files per teammate, isolated via git worktrees, merged after completion)
-4. **Validate** (validate.py) → validation-report.md
+### Key Patterns
 
-### Plugin Structure
-
-Two-level nesting: marketplace root (`auto-para/`) contains the plugin (`plugins/autopara/`). Each level has its own `.claude-plugin/` manifest. Install via Claude Code plugin marketplace: search `henrywen98/auto-para`.
+- **Atomic notes**: Each note in 1_zettel/ contains one concept. Multi-topic inbox files are split.
+- **Connection forcing**: Every new note must link to ≥1 existing note via contextual wikilinks.
+- **MOC auto-maintenance**: When a tag accumulates ≥3 notes, a MOC is created/updated in 2_maps/.
+- **Inbox is ephemeral**: Processed files are deleted from 0_inbox/, not archived.
+- **Batch threshold**: ≤10 inbox files processed directly; >10 dispatched to parallel zet-worker agents.
 
 ## Notes
 
-- `manifest.json`, `validation-report.md`, `.venv/` are gitignored
-- `relink.py` can be imported as a module (`from relink import relink_content`) or run standalone
-- `scan.py` word count is bilingual: Chinese counted per character, English per word
+- Install via Claude Code plugin marketplace: `github:henrywen98/zettelkasten`
+- Frontmatter schema in `references/frontmatter-spec.md`
+- Vault directory layout in `references/vault-structure.md`
