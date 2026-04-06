@@ -8,3 +8,5 @@ manifest.json
 validation-report.md
 uv.lock
 .claude/settings.local.json
+inbox/
+docs/inbox/
