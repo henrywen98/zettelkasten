@@ -62,7 +62,7 @@ auto-para/                                       # Marketplace root
     └── references/                              # Frontmatter and vault structure specs
 ```
 
-Install: subscribe marketplace `github:henrywen98/auto-para`, then `/plugins install autopara@auto-para`.
+Install: `/plugin marketplace add henrywen98/auto-para`, then `/plugin install autopara@auto-para`.
 
 ### para-migrate Parallel Execution Model
 

@@ -14,11 +14,11 @@ AutoPARA combines both: PARA's structural principles to organize the vault, and 
 ## Installation
 
 ```bash
-# Subscribe to marketplace
-/plugins install github:henrywen98/auto-para
+# Add marketplace
+/plugin marketplace add henrywen98/auto-para
 
-# Install the plugin
-/plugins install autopara@auto-para
+# Install plugin
+/plugin install autopara@auto-para
 ```
 
 ## Commands
@@ -76,13 +76,10 @@ Vault/
 
 ## Quick Start
 
-1. Install the plugin: `# Subscribe to marketplace
-/plugins install github:henrywen98/auto-para
-
-# Install the plugin
-/plugins install autopara@auto-para`
-2. Initialize your vault: `/para migrate` (one-time migration to AutoPARA structure)
-3. Daily use: drop materials into `0_inbox/`, run `/para ingest`
+1. Add marketplace: `/plugin marketplace add henrywen98/auto-para`
+2. Install plugin: `/plugin install autopara@auto-para`
+3. Initialize your vault: `/para migrate` (one-time migration to AutoPARA structure)
+4. Daily use: drop materials into `0_inbox/`, run `/para ingest`
 
 ## Tech Stack
 
