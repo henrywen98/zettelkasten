@@ -14,8 +14,8 @@ No Python, no external dependencies. Three skills handle user commands; one agen
 
 - `zet-ingest` (skill) — Pure orchestrator: scans inbox, batches files, dispatches zet-worker, updates MOCs, commits
 - `zet-query` (skill) — Knowledge base Q&A: navigates MOCs and notes to answer questions
-- `zet-lint` (skill) — Health check: orphan notes, broken links, frontmatter completeness, MOC coverage
-- `zet-worker` (agent) — Sole file processor: ~10 files per batch, all processing logic lives here
+- `zet-lint` (skill) — Health check: 10 checks (orphans, broken links, frontmatter, MOC coverage, tag consistency, image refs, duplicates) + auto-fix
+- `zet-worker` (agent) — Sole file processor: ~10 files per batch, 8-step pipeline (read → atomize → rewrite → frontmatter → links → dedup → write → images)
 
 Skills reference specs via `${CLAUDE_PLUGIN_ROOT}` — resolves to the plugin root at runtime.
 
@@ -31,6 +31,8 @@ Claude Code is launched inside the Obsidian vault. All paths are relative — no
 - **Inbox is ephemeral**: Processed files are deleted from 0_inbox/, not archived.
 - **Sequential batching**: All files dispatched to zet-worker in batches of ~10, processed one batch at a time, each batch commits before next begins.
 - **Atomization rules**: Split decisions follow three tests (title/tag/independence) defined in `references/atomization-rules.md`.
+- **Tag normalization**: All tags lowercase kebab-case (`AI` → `ai`). Defined in `references/frontmatter-spec.md`.
+- **Dedup on ingest**: Worker checks for existing notes with same title before writing, skips exact duplicates.
 
 ## Plugin Structure
 
@@ -78,3 +80,4 @@ Never edit the installed copy directly — changes will be overwritten on next `
 - Frontmatter schema in `references/frontmatter-spec.md`
 - Vault directory layout in `references/vault-structure.md`
 - Atomization rules in `references/atomization-rules.md`
+- MOC management rules in `references/moc-rules.md`
