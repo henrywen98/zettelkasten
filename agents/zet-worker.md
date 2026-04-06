@@ -2,7 +2,7 @@
 name: zet-worker
 description: >-
   This agent is dispatched internally by the zet-ingest skill — never invoked directly by users.
-  It processes one batch of ~5 inbox files into Zettelkasten permanent notes. Later batches
+  It processes one batch of ~10 inbox files into Zettelkasten permanent notes. Later batches
   can discover and link to notes created by earlier batches, improving link quality progressively.
 
   <example>

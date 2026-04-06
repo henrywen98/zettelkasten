@@ -28,7 +28,7 @@ If 0_inbox/ is empty or no files match, inform the user and stop.
 
 ### 2. Batch and Dispatch
 
-Split all files into batches of 5 (last batch may be smaller). Process batches **one at a time, in order**.
+Split all files into batches of 10 (last batch may be smaller). Process batches **one at a time, in order**.
 
 **For each batch:**
 

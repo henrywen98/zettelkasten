@@ -15,7 +15,7 @@ No Python, no external dependencies. Three skills handle user commands; one agen
 - `zet-ingest` (skill) — Pure orchestrator: scans inbox, batches files, dispatches zet-worker, updates MOCs, commits
 - `zet-query` (skill) — Knowledge base Q&A: navigates MOCs and notes to answer questions
 - `zet-lint` (skill) — Health check: orphan notes, broken links, frontmatter completeness, MOC coverage
-- `zet-worker` (agent) — Sole file processor: ~5 files per batch, all processing logic lives here
+- `zet-worker` (agent) — Sole file processor: ~10 files per batch, all processing logic lives here
 
 Skills reference specs via `${CLAUDE_PLUGIN_ROOT}` — resolves to the plugin root at runtime.
 
@@ -29,7 +29,7 @@ Claude Code is launched inside the Obsidian vault. All paths are relative — no
 - **Connection forcing**: Every new note must link to ≥1 existing note via contextual wikilinks.
 - **MOC auto-maintenance**: When a tag accumulates ≥3 notes, a MOC is created/updated in 2_maps/.
 - **Inbox is ephemeral**: Processed files are deleted from 0_inbox/, not archived.
-- **Sequential batching**: All files dispatched to zet-worker in batches of ~5, processed one batch at a time, each batch commits before next begins.
+- **Sequential batching**: All files dispatched to zet-worker in batches of ~10, processed one batch at a time, each batch commits before next begins.
 - **Atomization rules**: Split decisions follow three tests (title/tag/independence) defined in `references/atomization-rules.md`.
 
 ## Plugin Structure
