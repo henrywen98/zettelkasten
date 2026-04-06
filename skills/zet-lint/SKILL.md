@@ -11,6 +11,12 @@ description: >-
 
 Scan the knowledge base for structural problems: orphan notes, broken links, incomplete frontmatter, MOC gaps.
 
+## Implementation Notes
+
+- Scan `1_zettel/` **recursively** for all `.md` files (not just one subdirectory)
+- Scan `2_maps/` dynamically with Glob — never hardcode MOC filenames
+- When writing helper scripts, use the **Write tool** to create a `.py` file, then run it with Bash. Do NOT use Bash heredoc or inline Python — the `!=` operator gets escaped to `\!=` in heredoc, causing SyntaxError.
+
 ## Reference Specs
 
 - Frontmatter: ${CLAUDE_PLUGIN_ROOT}/references/frontmatter-spec.md

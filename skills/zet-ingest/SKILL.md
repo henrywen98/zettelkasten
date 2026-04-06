@@ -17,8 +17,9 @@ Pure orchestrator. All file processing is delegated to zet-worker agents. This s
 
 ### 1. Scan Inbox
 
-Parse the target argument to find files. If no target specified, default to all .md files in 0_inbox/.
-Use Glob to expand patterns. Count the files found.
+Parse the target argument to find files. If no target specified, default to all .md files in 0_inbox/ **recursively** (including all subdirectories). Use Glob pattern `0_inbox/**/*.md` to find all nested files.
+
+If the user provides a target (file path or glob), expand it with Glob. Count the files found.
 
 If 0_inbox/ is empty or no files match, inform the user and stop.
 
