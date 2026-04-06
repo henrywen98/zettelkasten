@@ -1,0 +1,11 @@
+{
+  "name": "auto-para",
+  "description": "AI-powered Obsidian vault organizer — Claude Code plugin using the PARA method",
+  "owner": {
+    "name": "Henry",
+    "email": "henrywen030@icloud.com"
+  },
+  "plugins": [
+    { "name": "autopara", "description": "Obsidian vault auto-organizer: inbox → archive + wiki + visualizations", "source": "./plugins/autopara" }
+  ]
+}

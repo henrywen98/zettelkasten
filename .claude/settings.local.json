@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(docker --version)",
+      "Bash(\"/Applications/Draw.io.app/Contents/MacOS/draw.io\" --version)",
+      "Bash(docker run:*)",
+      "Read(//Users/henry/dev/2_areas/henry-hub/**)",
+      "Read(//Users/henry/dev/2_areas/henry-hub/.claude-plugin/**)"
+    ]
+  }
+}
